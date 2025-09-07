@@ -1,5 +1,7 @@
 ####This script loads the TSV files from Local path
 #### Ensure the configuration - line 11 to 16 , as per yours and also pls change the file name in line number 66 
+#### The list of files which are loaded one by one
+### List of tables : AdsInfo, Category,PhoneRequestStream,SearchInfo,SampleSubmission,Location,Testserchstream,UserInfo, VisitStream
 
 import pandas as pd
 import psycopg2
@@ -11,7 +13,7 @@ DB_HOST = "localhost"
 DB_PORT = "5432"
 DB_NAME = "Test1"
 DB_USER = "postgres"
-DB_PASS = "Daksha2206"
+DB_PASS = "****"
 # -----------------------------------------------
 
 def create_table_and_load(file_path):
