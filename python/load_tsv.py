@@ -1,4 +1,4 @@
-####This script loads the TSV files.
+####This script loads the TSV files from Local path
 #### Ensure the configuration - line 11 to 16 , as per yours and also pls change the file name in line number 66 
 
 import pandas as pd
