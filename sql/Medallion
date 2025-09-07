@@ -1,0 +1,165 @@
+
+------------------------------------------------Bronze Layer
+→ There are 7 tables. Keep all the tables as it is. 
+→ Using data flow (to combine two tables), join the Visitsstream and Phonerequeststream and form VisitPhonerequeststream data
+
+CREATE TABLE public."VisitPhoneRequestsStream" AS
+SELECT 
+    v."UserID",
+    v."IPID",
+    v."AdID",
+    v."ViewDate",
+    p."PhoneRequestDate",
+    GREATEST(
+        COALESCE(v.modified_timestamp, '1970-01-01'::timestamp),
+        COALESCE(p.modified_timestamp, '1970-01-01'::timestamp)
+    ) AS modified_timestamp
+FROM public."VisitsStream" v
+LEFT JOIN public."PhoneRequestsStream" p
+  ON v."UserID" = p."UserID"
+ AND v."IPID" = p."IPID"
+ AND v."AdID" = p."AdID";
+ 
+--------------------------------------------------Silver Layer
+User Information:
+
+Transformation: Create a userdetail table (it is not in dataset, use faker to create) with userid, name, email, mobile number, address,location id
+Goal: Combine the userinfo table and userdetail table and form a transformed data that has the combined data
+
+CREATE TABLE public."userdetail" (
+    userid        SERIAL PRIMARY KEY,
+    name          VARCHAR(100) NOT NULL,
+    email         VARCHAR(150) UNIQUE NOT NULL,
+    mobile_number VARCHAR(15) UNIQUE,
+    address       TEXT,
+    location_id   INT
+);
+
+
+  INSERT INTO public."userdetail" (userid, name, email, mobile_number, address, location_id) VALUES
+(1, 'Aarav Sharma', 'aarav.sharma1@example.com', '9876543210', '123 MG Road, Bengaluru', 101),
+(2, 'Isha Patel', 'isha.patel2@example.com', '9876543211', '45 Marine Drive, Mumbai', 102),
+(3, 'Rohan Mehta', 'rohan.mehta3@example.com', '9876543212', '78 Park Street, Kolkata', 103),
+(4, 'Simran Kaur', 'simran.kaur4@example.com', '9876543213', '56 Sector 22, Chandigarh', 104),
+(5, 'Aditya Verma', 'aditya.verma5@example.com', '9876543214', '89 Laxmi Nagar, Delhi', 105),
+(6, 'Priya Nair', 'priya.nair6@example.com', '9876543215', '12 MG Road, Kochi', 106),
+(7, 'Kunal Gupta', 'kunal.gupta7@example.com', '9876543216', '67 Banjara Hills, Hyderabad', 107),
+(8, 'Neha Reddy', 'neha.reddy8@example.com', '9876543217', '45 Jubilee Hills, Hyderabad', 108),
+(9, 'Vikram Joshi', 'vikram.joshi9@example.com', '9876543218', '90 Camp Area, Pune', 109),
+(10, 'Ananya Rao', 'ananya.rao10@example.com', '9876543219', '123 Anna Nagar, Chennai', 110),
+(11, 'Rajesh Kumar', 'rajesh.kumar11@example.com', '9876543220', '78 Gandhi Road, Lucknow', 111),
+(12, 'Meera Iyer', 'meera.iyer12@example.com', '9876543221', '34 T Nagar, Chennai', 112),
+(13, 'Arjun Desai', 'arjun.desai13@example.com', '9876543222', '56 Navrangpura, Ahmedabad', 113),
+(14, 'Sanya Malhotra', 'sanya.malhotra14@example.com', '9876543223', '23 Karol Bagh, Delhi', 114),
+(15, 'Harsh Singh', 'harsh.singh15@example.com', '9876543224', '67 Aliganj, Lucknow', 115),
+(16, 'Ritika Agarwal', 'ritika.agarwal16@example.com', '9876543225', '12 Salt Lake, Kolkata', 116),
+(17, 'Siddharth Jain', 'siddharth.jain17@example.com', '9876543226', '56 SG Highway, Ahmedabad', 117),
+(18, 'Kavya Pillai', 'kavya.pillai18@example.com', '9876543227', '78 Vashi, Navi Mumbai', 118),
+(19, 'Manish Kapoor', 'manish.kapoor19@example.com', '9876543228', '90 Connaught Place, Delhi', 119),
+(20, 'Tanvi Bhatia', 'tanvi.bhatia20@example.com', '9876543229', '45 Sector 15, Noida', 120),
+(21, 'Nikhil Saxena', 'nikhil.saxena21@example.com', '9876543230', '23 Gomti Nagar, Lucknow', 121),
+(22, 'Shreya Ghosh', 'shreya.ghosh22@example.com', '9876543231', '12 Ballygunge, Kolkata', 122),
+(23, 'Varun Khanna', 'varun.khanna23@example.com', '9876543232', '34 Hauz Khas, Delhi', 123),
+(24, 'Aditi Menon', 'aditi.menon24@example.com', '9876543233', '56 Kaloor, Kochi', 124),
+(25, 'Raghav Sharma', 'raghav.sharma25@example.com', '9876543234', '90 Civil Lines, Jaipur', 125),
+(26, 'Sneha Chawla', 'sneha.chawla26@example.com', '9876543235', '67 Mansarovar, Jaipur', 126),
+(27, 'Ayush Tiwari', 'ayush.tiwari27@example.com', '9876543236', '78 Gomti Nagar, Lucknow', 127),
+(28, 'Pooja Das', 'pooja.das28@example.com', '9876543237', '45 Gariahat, Kolkata', 128),
+(29, 'Karthik Reddy', 'karthik.reddy29@example.com', '9876543238', '123 Kukatpally, Hyderabad', 129),
+(30, 'Divya Sethi', 'divya.sethi30@example.com', '9876543239', '34 Indira Nagar, Bengaluru', 130),
+(31, 'Rohit Malhotra', 'rohit.malhotra31@example.com', '9876543240', '12 Greater Kailash, Delhi', 131),
+(32, 'Anjali Nair', 'anjali.nair32@example.com', '9876543241', '67 Vyttila, Kochi', 132),
+(33, 'Yash Garg', 'yash.garg33@example.com', '9876543242', '56 Rajouri Garden, Delhi', 133),
+(34, 'Pallavi Rao', 'pallavi.rao34@example.com', '9876543243', '23 Malleswaram, Bengaluru', 134),
+(35, 'Abhinav Mishra', 'abhinav.mishra35@example.com', '9876543244', '45 Hazratganj, Lucknow', 135),
+(36, 'Shruti Kulkarni', 'shruti.kulkarni36@example.com', '9876543245', '90 Shivaji Nagar, Pune', 136),
+(37, 'Devansh Kapoor', 'devansh.kapoor37@example.com', '9876543246', '78 Defence Colony, Delhi', 137),
+(38, 'Nisha Rani', 'nisha.rani38@example.com', '9876543247', '34 Ashok Nagar, Chennai', 138),
+(39, 'Rahul Chandra', 'rahul.chandra39@example.com', '9876543248', '56 Boring Road, Patna', 139),
+(40, 'Ira Sen', 'ira.sen40@example.com', '9876543249', '67 Salt Lake, Kolkata', 140),
+(41, 'Aniket Yadav', 'aniket.yadav41@example.com', '9876543250', '12 Indira Nagar, Lucknow', 141),
+(42, 'Maya Joseph', 'maya.joseph42@example.com', '9876543251', '23 Panampilly Nagar, Kochi', 142),
+(43, 'Aman Kapoor', 'aman.kapoor43@example.com', '9876543252', '45 Powai, Mumbai', 143),
+(44, 'Sakshi Sharma', 'sakshi.sharma44@example.com', '9876543253', '90 Kothrud, Pune', 144),
+(45, 'Parth Deshmukh', 'parth.deshmukh45@example.com', '9876543254', '67 FC Road, Pune', 145),
+(46, 'Riya Sen', 'riya.sen46@example.com', '9876543255', '34 Park Circus, Kolkata', 146),
+(47, 'Kabir Joshi', 'kabir.joshi47@example.com', '9876543256', '78 Koregaon Park, Pune', 147),
+(48, 'Alia Khan', 'alia.khan48@example.com', '9876543257', '56 Bandra, Mumbai', 148),
+(49, 'Arnav Pillai', 'arnav.pillai49@example.com', '9876543258', '23 Anna Nagar, Chennai', 149),
+(50, 'Tanya Das', 'tanya.das50@example.com', '9876543259', '12 Ballygunge, Kolkata', 150);
+
+Goal: Combine the userinfo table and userdetail table and form a transformed data that has the combined data
+--------------
+CREATE TABLE public."UserInfodetail" AS
+SELECT 
+    u."UserID",
+    u."UserAgentID",
+    u."UserAgentOSID",
+    u."UserDeviceID",
+    u."UserAgentFamilyID",
+    d."IPID",
+    d."AdID",
+    d."ViewDate",
+    d."PhoneRequestDate",
+    GREATEST(
+        COALESCE(d."ViewDate"::timestamp, '1970-01-01'::timestamp),
+        COALESCE(d."PhoneRequestDate"::timestamp, '1970-01-01'::timestamp)
+    ) AS "LastActivityDate",
+    GREATEST(
+        COALESCE(u.modified_timestamp, '1970-01-01'::timestamp),
+        COALESCE(d.modified_timestamp, '1970-01-01'::timestamp)
+    ) AS modified_timestamp
+FROM public."UserInfo" u
+LEFT JOIN public."userdetail" d
+  ON u."UserID" = d."UserID";
+  
+ ******************************************************************* 
+  Geolocation: (refer python file Google_Geocoding_API.py
+
+Transformation: From the location table fields, use Geolocation API (Geolocation API overview  | to find the latitude and longitude and 
+add those in the same table
+Goal: Use google API location services to fetch the geolocation data. Run the script in notebook and store the output in Location table/Local (actual ADLS)
+
+
+alter table public."Location" add latitude DOUBLE PRECISION 
+alter table public."Location" add longitude DOUBLE PRECISION
+
+Step 2: Python Script to Call Google Geocoding API
+This script will:
+Fetch rows from location where latitude/longitude is NULL.
+Call Google Geocoding API with the Region + City.
+Update the same table with latitude and longitude.  (refer Google Geocoding API.py)
+
+Table used for below  Interaction Normalization:
+public."SearchInfo" ---SearchDate
+public."PhoneRequestsStream" --  PhoneRequestDate
+public."VisitsStream" ---ViewDate
+public."sampleSubmission" --Isclick
+
+
+
+User Interaction Normalization:
+
+Transformation: Join SearchStream.tsv, VisitsStream.tsv, and PhoneRequestsStream.tsv on UserID, IPID, and AdID to create a normalized view of user interactions (e.g., searches, ad views, phone requests).
+
+Goal: Create a unified user interaction table with fields like SearchDate, ViewDate, IsClick, PhoneRequestDate for each user interaction.
+
+CREATE OR REPLACE VIEW public.UserInteractions AS
+SELECT
+    si."UserID",
+    vs."AdID",  -- take AdID from VisitsStream (or PRS)
+    si."SearchDate",
+    ss."IsClick",
+    vs."ViewDate",
+    prs."PhoneRequestDate"
+FROM public."SearchInfo" si
+LEFT JOIN public."VisitsStream" vs
+    ON si."UserID" = vs."UserID"
+   AND si."IPID"   = vs."IPID"
+LEFT JOIN public."PhoneRequestsStream" prs
+    ON si."UserID" = prs."UserID"
+   AND si."IPID"   = prs."IPID"
+   AND vs."AdID"   = prs."AdID"
+LEFT JOIN public."sampleSubmission" ss
+    ON si."SearchID" = ss."ID";
+
