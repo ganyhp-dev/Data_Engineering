@@ -1,0 +1,39 @@
+GCP Account with billing enabled
+Google Cloud SDK installed
+Terraform installed
+
+Step 1: Set Up GCP Authentication
+
+*******TO CREATE SERVICE ACCOUNT 
+gcloud iam service-accounts create terraform-sa --display-name "Terraform Service Account"
+
+*******Project ID to be created earlier before applying the below command:
+gcloud projects add-iam-policy-binding <PROJECT_ID> --member="serviceAccount:terraform-sa@<PROJECT_ID>.iam.gserviceaccount.com" --role="roles/owner"
+
+Step 2: Create Terraform Configuration Structure
+terraform-gcp/
+├── main.tf
+├── variables.tf
+├── outputs.tf
+├── terraform.tfvars
+└── providers.tf
+
+*********Initialize and Apply Terraform
+terraform init
+*********Validate Configuration:
+terraform validate
+**********Plan the Deployment:
+terraform plan
+*********Apply the Configuration:
+terraform apply
+Type yes when prompted to confirm.
+*********Verify Deployment:
+# List buckets to verify creation
+gsutil ls
+
+# Check bucket details
+gsutil ls -L gs://your-bucket-name
+
+*******Clean Up Resources
+terraform destroy
+
