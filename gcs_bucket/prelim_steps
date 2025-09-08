@@ -10,6 +10,10 @@ gcloud iam service-accounts create terraform-sa --display-name "Terraform Servic
 *******Project ID to be created earlier before applying the below command:
 gcloud projects add-iam-policy-binding <PROJECT_ID> --member="serviceAccount:terraform-sa@<PROJECT_ID>.iam.gserviceaccount.com" --role="roles/owner"
 
+******Create and Download Key:
+gcloud iam service-accounts keys create terraform-key.json \
+  --iam-account=terraform-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com
+
 Step 2: Create Terraform Configuration Structure
 terraform-gcp/
 ├── main.tf
