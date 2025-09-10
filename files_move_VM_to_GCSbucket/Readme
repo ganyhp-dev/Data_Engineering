@@ -1,0 +1,1 @@
+gsutil cp /home/ganesh/gcpdata/*.csv gs://gany2206-data-bucket/incoming/
