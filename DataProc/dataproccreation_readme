@@ -1,0 +1,46 @@
+
+***************To creat Data Proc cluster
+1) Create a folder in local named "dataproc-cluster\
+
+C:\Users\OrCon\dataproc-cluster>gcloud services enable dataproc.googleapis.com compute.googleapis.com storage.googleapis.com
+Operation "operations/acf.p2-427679701050-7e5435bb-82cc-4b51-91aa-cdb5542e2259" finished successfully.
+
+Steps: 
+Service Account
+Attach IAM Roles (Dataproc Worker, Storage, Logging, etc.)
+Use the Service Account in Dataproc Cluster
+
+Step 1: Terraform Project Structure (refer local dataproc folder for scripts)
+dataproc-terraform/
+│── main.tf
+│── variables.tf
+│── outputs.tf
+│── providers.tf
+│── terraform.tfvars
+
+
+Once the above files are ready, then follow the below:
+Commands to Apply & verify 
+***************************************************************terraform init
+C:\Users\OrCon\dataproc-cluster>terraform init
+****************************************************************terraform plan
+C:\Users\OrCon\dataproc-cluster>terraform plan
+**************************************************************************terraform apply -auto-approve
+
+C:\Users\OrCon\dataproc-cluster>gcloud auth list
+********Re-run Terraform
+terraform plan
+terraform apply -auto-approve
+Outputs: DATAPROC Cluster verify 
+C:\Users\OrCon\dataproc-cluster>terraform show
+
+│
+
+
+
+
+
+
+
+
+
