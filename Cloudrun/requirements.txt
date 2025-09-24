@@ -1,0 +1,6 @@
+Flask
+pandas
+google-cloud-storage
+pg8000
+gunicorn
+pyarrow
